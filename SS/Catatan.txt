@@ -1,0 +1,4 @@
+Pada bagian halaman historyInprogress,jelaskan status yang ada disana,ada 3 status Inprogress,Not Confirm,Confirm,Delivery dan di halaman history complete
+ada 3 status Complete,Reject
+
+Pada halaman notifikasi,jelaskan bahhwa akan muncul notifikasi baik beruoa gabar ataupun tulisan

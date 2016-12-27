@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_account"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.project.edn.washit.Activity.AccountActivity"
+    android:orientation="vertical">
+    <include layout="@layout/toolbar"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp">
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/txt_nameuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:text="Nama"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/txt_emailuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                android:text="Email"
+                android:layout_marginTop="5dp"/>
+            <TextView
+                android:id="@+id/txt_telpuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17dp"
+                android:text="No.Telp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <Button
+        android:id="@+id/btnedit"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="EDIT"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/btncorner"/>
+    <Button
+        android:id="@+id/btnChangepw"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:text="Change Password"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@drawable/btncorner"/>
+
+
+</LinearLayout>

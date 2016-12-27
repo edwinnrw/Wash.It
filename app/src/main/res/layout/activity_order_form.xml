@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_order_cloths"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.project.edn.washit.Activity.OrderForm">
+    <include layout="@layout/toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="16dp">
+
+        <EditText
+            android:hint="Date"
+            android:drawableLeft="@drawable/ic_calendar_18dp"
+            android:drawableTint="@color/accent"
+            android:drawablePadding="14dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/date"
+            android:inputType="date"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.5"/>
+        <EditText
+            android:hint="Time"
+            android:drawablePadding="15dp"
+            android:drawableLeft="@drawable/ic_clock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/time"
+            android:inputType="time"
+            android:drawableTintMode="src_over"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/addresspick"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="19dp"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Address"
+        android:drawableLeft="@drawable/ic_room_black_18dp"/>
+    <EditText
+        android:id="@+id/detailaddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="19dp"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="10dp"
+        android:drawableTint="@color/accent"
+        android:hint="House No/Floor/Landmark"
+        android:drawableLeft="@drawable/ic_assignment_18dp"/>
+    <EditText
+        android:id="@+id/note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="19dp"
+        android:drawablePadding="15dp"
+        android:layout_marginTop="10dp"
+        android:drawableTint="@color/accent"
+        android:hint="Add Note (Optional)"
+        android:drawableLeft="@drawable/ic_description_black_18dp"/>
+    <Button
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btncorner"
+        android:text="Submit"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/white"/>
+</LinearLayout>
