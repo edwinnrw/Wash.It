@@ -1,7 +1,10 @@
 package com.project.edn.washit.Activity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.project.edn.washit.Config;
 import com.project.edn.washit.Fragment.DatePickerFragment;
@@ -38,16 +43,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class OrderForm extends AppCompatActivity implements View.OnClickListener, TextWatcher {
-    private EditText date,time;
     private EditText address;
-    private EditText detail;
-    private EditText note;
     private Button btn;
+    private EditText date;
+    private EditText detail;
+    private Intent in;
+    protected GoogleApiClient mGoogleApiClient;
+    private EditText note;
+    private ProgressDialog progressDialog;
+    private SharedPreferences sharedPreferences;
+    private EditText time;
     private Toolbar toolbar;
-    private static int FROM_LOCATION_REQUEST_CODE = 0;
-    private LatLng addressLatLng;
-    private double addressLongitude;
-    private double addressLatitude;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,7 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
         getSupportActionBar().setTitle("Order");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        in = getIntent();
         date=(EditText)findViewById(R.id.date);
 
         date.addTextChangedListener(this);
@@ -68,15 +76,16 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
         time.setKeyListener(null);
         time.setFocusable(false);
         time.setOnClickListener(this);
-        address=(EditText)findViewById(R.id.addresspick);
-        address.setFocusable(false);
-        address.addTextChangedListener(this);
-        address.setOnClickListener(this);
+        address=(EditText) findViewById(R.id.addresspick);
         detail=(EditText)findViewById(R.id.detailaddress);
         detail.addTextChangedListener(this);
         note=(EditText)findViewById(R.id.note);
         btn=(Button)findViewById(R.id.submit);
         btn.setOnClickListener(this);
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Loading..");
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Toast.makeText(this, this.in.getStringExtra("Ket")+sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""), Toast.LENGTH_LONG).show();
 
     }
     @Override
@@ -120,21 +129,18 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
             case R.id.date:
                 new DatePickerFragment(date).show(getFragmentManager(), "datepicker");
                 break;
-            case R.id.addresspick:
-                Intent change =new Intent(OrderForm.this, SetAddress.class);
-                startActivityForResult(change, FROM_LOCATION_REQUEST_CODE);
-                break;
         }
 
 
     }
-    public void requesrOrder(){
+    public void requesrOrder(final String date, final String time, final String address, final String detail, final String note){
         StringRequest stringRequest1 = new StringRequest(Request.Method.POST, Config.API_ORDER,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         //Jika Respon server sukses
-                        if (Success(response).equalsIgnoreCase("true")){
+                        progressDialog.dismiss();
+                        if (Success(response).equalsIgnoreCase("true")) {
                             showMessage();
                         }
                     }
@@ -152,11 +158,14 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
                 Map<String, String> params = new HashMap<>();
                 //Parameter
 //                params.put("token", token);
-                  params.put("date",date.getText().toString().trim());
-                  params.put("time",time.getText().toString().trim());
-                  params.put("address",address.getText().toString().trim());
-                  params.put("detail",detail.getText().toString().trim());
-                  params.put("note",note.getText().toString().trim());
+                params.put("type",in.getStringExtra("Ket"));
+                params.put(Config.TOKEN_SHARED_PREF, sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""));
+                params.put("id_laundry", in.getStringExtra("id"));
+                params.put("address", address);
+                params.put("datepick", date);
+                params.put("time", time);
+                params.put("detail", detail);
+                params.put("note", note);
 
                 //Kembalikan Nilai parameter
                 return params;
@@ -182,20 +191,7 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
         }
         return succes;
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == FROM_LOCATION_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                addressLatLng = new LatLng(data.getDoubleExtra("LAT", 0), data.getDoubleExtra("LON", 0));
-                addressLatitude=data.getDoubleExtra("LAT",0);
-                addressLongitude=data.getDoubleExtra("LON",0);
-                address.setText(data.getStringExtra("ADDRESS"));
-            }
-        }
-
-    }
     public  void showConfirm(){
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(OrderForm.this);
         alertDialogBuilder.setTitle("Confirm");
@@ -207,7 +203,8 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        requesrOrder();
+                        progressDialog.show();
+                        requesrOrder(date.getText().toString().trim(),time.getText().toString().trim(),address.getText().toString(),detail.getText().toString().trim(),note.getText().toString().trim());
                     }
                 });
         alertDialogBuilder.setNegativeButton("No",
@@ -232,14 +229,15 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
         android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(OrderForm.this);
         alertDialogBuilder.setTitle("Confirm");
         TextView myMsg = new TextView(this);
-        myMsg.setText("Your Order Is Succes,Please Wait Respons From Laundry");
+        myMsg.setText("Your Order Is Succes\nPlease Wait Respons From Laundry");
         myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
         alertDialogBuilder.setView(myMsg);
         alertDialogBuilder.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
+                        Intent in =new Intent(OrderForm.this,MainActivity.class);
+                        startActivity(in);
 
                     }
                 });

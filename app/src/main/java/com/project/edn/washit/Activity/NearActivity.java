@@ -19,10 +19,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.project.edn.washit.Adapter.NearClothListAdapter;
+import com.project.edn.washit.Adapter.NearLaundryListAdapter;
 import com.project.edn.washit.Config;
 import com.project.edn.washit.GPSTracker;
-import com.project.edn.washit.Model.Cloths;
+import com.project.edn.washit.Model.Laundry;
 import com.project.edn.washit.R;
 
 import org.json.JSONArray;
@@ -37,9 +37,9 @@ import java.util.Map;
 
 public class NearActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private Toolbar toolbar;
-    private List<Cloths> clothList;
+    private List<Laundry> clothList;
     private RecyclerView mRecyclerView;
-    private NearClothListAdapter adapter;
+    private NearLaundryListAdapter adapter;
     private ProgressBar progressBar;
     private SearchView mSearchView;
     private GPSTracker gps;
@@ -50,7 +50,7 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_near);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Wash-Cloths");
+        getSupportActionBar().setTitle("Wash-Laundry");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         gps = new GPSTracker(NearActivity.this);
@@ -85,7 +85,7 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
     }
 
     public void getJsonMerchant() {
-        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, Config.API_GETDATALAUNDRYCLOTHS,
+        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, Config.API_NEARGETDATALAUNDRY,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -165,7 +165,7 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
                 Location locationB = new Location("Target Pos");
                 locationB.setLatitude(post.optDouble("lat"));
                 locationB.setLongitude(post.optDouble("long"));
-                Cloths item = new Cloths();
+                Laundry item = new Laundry();
 //                Double distance = SphericalUtil.computeDistanceBetween(currentLocation, lockmerchant);
                 double distance=a.distanceTo(locationB)/1000;;
                 String d=String.format("%-12.1f",distance);
@@ -181,7 +181,7 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
                 item.setLatitude(Double.valueOf(post.optDouble("lat")));
                 item.setLongitude(Double.valueOf(post.optDouble("long")));
                 clothList.add(item);
-                adapter = new NearClothListAdapter(this, clothList);
+                adapter = new NearLaundryListAdapter(this, clothList);
                 mRecyclerView.setAdapter(adapter);
 
             }
@@ -201,15 +201,15 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<Cloths> filteredModelList = filter(clothList, newText);
+        final List<Laundry> filteredModelList = filter(clothList, newText);
 
         adapter.setFilter(filteredModelList);
         return true;
     }
-    private List<Cloths> filter(List<Cloths> models, String query) {
+    private List<Laundry> filter(List<Laundry> models, String query) {
         query = query.toLowerCase();
-        final List<Cloths> filteredModelList = new ArrayList<>();
-        for (Cloths model : models) {
+        final List<Laundry> filteredModelList = new ArrayList<>();
+        for (Laundry model : models) {
             final String text = model.getName().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);

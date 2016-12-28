@@ -263,25 +263,6 @@
                         android:paddingRight="15dp"
                         android:paddingLeft="15dp"
                         />
-                    <LinearLayout
-                        android:id="@+id/showMap"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:clickable="true"
-                        android:gravity="center|right"
-                        android:paddingRight="15dp"
-                        android:paddingLeft="15dp"
-                        android:background="#fbfbfb">
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Show Map and Route"
-                            android:layout_gravity="center|right"
-                            android:textColor="@color/green_500"
-                            />
-                    </LinearLayout>
 
                 </LinearLayout>
 

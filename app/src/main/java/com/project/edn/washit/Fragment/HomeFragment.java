@@ -105,12 +105,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.menushoes:
                 in=new Intent(getActivity(), MainLaundryActivity.class);
-                in.putExtra("Ket", "helmet");
+                in.putExtra("Ket", "shoes");
                 startActivity(in);
                 break;
             case R.id.menuhelm:
                 in=new Intent(getActivity(), MainLaundryActivity.class);
-                in.putExtra("Ket", "shoes");
+                in.putExtra("Ket", "helmet");
                 startActivity(in);
                 break;
 

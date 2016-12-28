@@ -13,7 +13,7 @@ import com.project.edn.washit.R;
 
 public class DetailHistory extends AppCompatActivity {
     private Toolbar toolbar;
-    private TextView status,orderno,namelaundry,addresslaundry,adresspick,orderDate,datefinish,datepick,cost;
+    private TextView status,orderno,nameLaundry,addressLaundry,adressPick,orderDate,dateFinish,datePick,cost;
     private ImageView img;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,18 +29,18 @@ public class DetailHistory extends AppCompatActivity {
         status.setText(in.getStringExtra("status"));
         orderno=(TextView)findViewById(R.id.orderno);
         orderno.setText(in.getStringExtra("orderno"));
-        namelaundry=(TextView)findViewById(R.id.namelaundry);
-        namelaundry.setText(in.getStringExtra("namelaundry"));
-        addresslaundry=(TextView)findViewById(R.id.addresLaundry);
-        addresslaundry.setText(in.getStringExtra("addresslaundry"));
-        adresspick=(TextView)findViewById(R.id.addressCostomer);
-        adresspick.setText(in.getStringExtra("addresscustomer"));
+        nameLaundry=(TextView)findViewById(R.id.namelaundry);
+        nameLaundry.setText(in.getStringExtra("namelaundry"));
+        addressLaundry=(TextView)findViewById(R.id.addresLaundry);
+        addressLaundry.setText(in.getStringExtra("addresslaundry"));
+        adressPick=(TextView)findViewById(R.id.addressCostomer);
+        adressPick.setText(in.getStringExtra("addresscustomer"));
         orderDate=(TextView)findViewById(R.id.dateOrder);
         orderDate.setText(in.getStringExtra("orderDate"));
-        datefinish=(TextView)findViewById(R.id.datefinish);
-        datefinish.setText(in.getStringExtra("datefinish"));
-        datepick=(TextView)findViewById(R.id.datepick);
-        datepick.setText(in.getStringExtra("datepick"));
+        dateFinish=(TextView)findViewById(R.id.datefinish);
+        dateFinish.setText(in.getStringExtra("datefinish"));
+        datePick=(TextView)findViewById(R.id.datepick);
+        datePick.setText(in.getStringExtra("datepick"));
         cost=(TextView)findViewById(R.id.cost);
         cost.setText(in.getStringExtra("cost"));
         img=(ImageView)findViewById(R.id.iconLaundry);
@@ -61,4 +61,6 @@ public class DetailHistory extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
 }

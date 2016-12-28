@@ -1,7 +1,6 @@
 package com.project.edn.washit.Fragment;
 
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,18 +17,14 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.project.edn.washit.Adapter.ClothsListAdapter;
 import com.project.edn.washit.Adapter.HistoryListAdapter;
 import com.project.edn.washit.Config;
-import com.project.edn.washit.Model.Cloths;
 import com.project.edn.washit.Model.History;
 import com.project.edn.washit.R;
 
@@ -117,7 +112,7 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar123);
         progressBar.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        getJsonHistory("all");
+        getJsonHistory("new");
         parseJson();
 
     }
@@ -128,48 +123,24 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
                     @Override
                     public void onResponse(String response) {
                         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-                        //Jika Respon server sukses
-                        if (Success(response).equalsIgnoreCase("true")){
-                            if (!sharedPreferences.getString("json","").equalsIgnoreCase(response)){
+                        if (Success(response).equalsIgnoreCase("true")) {
+                            if (!sharedPreferences.getString("jsonInprogress","").equalsIgnoreCase(response)) {
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
                                 if (updateParam.equalsIgnoreCase("update")) {
-
-                                    //Getting editor
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    // put nilai false untuk login
-                                    editor.putString("json", response);
+                                    editor.putString("jsonInprogress", response);
                                     editor.commit();
                                     getData();
-
-
-                                }if (updateParam.equalsIgnoreCase("new")){
-                                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    // put nilai false untuk login
-                                    editor.putString("json", response);
+                                }
+                                if (updateParam.equalsIgnoreCase("new")) {
+                                    editor.putString("jsonInprogress", response);
                                     editor.commit();
                                     parseJson();
                                 }
-
-                            }else {
-//                                    if (sharedPreferences.getString("json","").equalsIgnoreCase("")){
-//                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                                        // put nilai false untuk login
-//                                        editor.putString("json", response);
-//                                        editor.commit();
-//                                        parseJson();
-//                                    }else{
-                                if(updateParam.equalsIgnoreCase("new")){
-                                    parseJson();
-
-                                }
-//                                    }
-                                //                                    parceJson();
-//                                    mSwipeRefreshLayout.setRefreshing(false);
+                            } else if (updateParam.equalsIgnoreCase("new")) {
+                                parseJson();
                             }
-
-                        }else {
-
                         }
+
 
 
                     }
@@ -178,7 +149,7 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Tambahkan apa yang terjadi setelah Pesan Error muncul, alternatif
-//                        Toast.makeText(getActivity(), "Failed Load Your Data,Check Your Connection" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Failed Load Your Data,Check Your Connection", Toast.LENGTH_LONG).show();
 
                     }
                 }) {
@@ -186,10 +157,10 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 //Parameter
-                params.put("keterangan", "");
-//                params.put("token", token);
+                params.put("ket", "In progress");
+                params.put(Config.TOKEN_SHARED_PREF,sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""));
+                return params;//                params.put("token", token);
                 //Kembalikan Nilai parameter
-                return params;
             }
         };
 
@@ -217,7 +188,7 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
         progressBar.setVisibility(View.GONE);
         historyList = new ArrayList<>();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String jsonCache=sharedPreferences.getString("json", "");
+        String jsonCache=sharedPreferences.getString("jsonInprogress", "");
 
 
         try {
@@ -272,7 +243,8 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
     private void getData() {
         History item =new History();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String jsonCache=sharedPreferences.getString("json", "");
+        String jsonCache=sharedPreferences.getString("jsonInprogress", "");
+
         try {
             JSONObject json1= (JSONObject) new JSONTokener(jsonCache).nextValue();
             JSONArray json2 = json1.getJSONArray("data");
@@ -289,7 +261,8 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
                 item.setDatefinish(post.optString("datefinish"));
                 item.setOrderdate(post.optString("orderdate"));
                 item.setPrice(post.optString("cost"));
-                historyList.add(0,item);
+                historyList.clear();
+                historyList.add(item);
             }
 
 

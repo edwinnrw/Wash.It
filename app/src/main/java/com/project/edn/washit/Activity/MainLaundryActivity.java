@@ -20,9 +20,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.project.edn.washit.Adapter.ClothsListAdapter;
+import com.project.edn.washit.Adapter.LaundryListAdapter;
 import com.project.edn.washit.Config;
-import com.project.edn.washit.Model.Cloths;
+import com.project.edn.washit.Model.Laundry;
 import com.project.edn.washit.R;
 
 import org.json.JSONArray;
@@ -37,19 +37,20 @@ import java.util.Map;
 
 public class MainLaundryActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, View.OnClickListener {
     private Toolbar toolbar;
-    private List<Cloths> clothList;
+    private List<Laundry> clothList;
     private RecyclerView mRecyclerView;
-    private ClothsListAdapter adapter;
+    private LaundryListAdapter adapter;
     private ProgressBar progressBar;
     private SearchView mSearchView;
     private CardView near;
+    private Intent in;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_laundry_cloths);
+        setContentView(R.layout.activity_main_laundry);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Wash-Cloths");
+        getSupportActionBar().setTitle("Wash-Laundry");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         mSearchView=(SearchView) findViewById(R.id.search);
@@ -58,6 +59,7 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         near=(CardView)findViewById(R.id.near);
+        in=getIntent();
         near.setOnClickListener(this);
         getJsonMerchant();
         setupSearchView();
@@ -77,9 +79,6 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
                         if (Success(response).equalsIgnoreCase("true")){
                             parceJson(response);
                         }
-
-
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -94,6 +93,7 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 //Parameter
+                params.put("type",in.getStringExtra("Ket"));
 //                params.put(Config.VAR_ID, Config.KEY_ID);
 //                params.put("token", token);
 //                params.put("city", city);
@@ -144,7 +144,8 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
 
             for (int i=0 ; i<json2.length();i++){
                 JSONObject post = json2.optJSONObject(i);
-                Cloths item = new Cloths();
+                Laundry item = new Laundry();
+                item.setId(post.optInt("id"));
                 item.setName(post.optString("name"));
                 item.setImage(post.optString("image"));
                 item.setAddress(post.optString("address"));
@@ -152,11 +153,12 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
                 item.setCost(post.optString("cost"));
                 item.setPhone(post.optString("telp"));
                 item.setMaterial(post.optString("material"));
-                item.setService(post.optString("Dry"));
+                item.setService(post.optString("service"));
                 item.setLatitude(Double.valueOf(post.optDouble("lat")));
                 item.setLongitude(Double.valueOf(post.optDouble("long")));
+                item.setKeterangan(in.getStringExtra("Ket"));
                 clothList.add(item);
-                adapter = new ClothsListAdapter(this, clothList);
+                adapter = new LaundryListAdapter(this, clothList);
                 mRecyclerView.setAdapter(adapter);
 
             }
@@ -176,15 +178,15 @@ public class MainLaundryActivity extends AppCompatActivity implements SearchView
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        final List<Cloths> filteredModelList = filter(clothList, newText);
+        final List<Laundry> filteredModelList = filter(clothList, newText);
 
         adapter.setFilter(filteredModelList);
         return true;
     }
-    private List<Cloths> filter(List<Cloths> models, String query) {
+    private List<Laundry> filter(List<Laundry> models, String query) {
         query = query.toLowerCase();
-        final List<Cloths> filteredModelList = new ArrayList<>();
-        for (Cloths model : models) {
+        final List<Laundry> filteredModelList = new ArrayList<>();
+        for (Laundry model : models) {
             final String text = model.getName().toLowerCase();
             if (text.contains(query)) {
                 filteredModelList.add(model);

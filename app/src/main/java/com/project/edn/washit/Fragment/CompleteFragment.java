@@ -18,18 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.project.edn.washit.Adapter.ClothsListAdapter;
 import com.project.edn.washit.Adapter.HistoryListAdapter;
 import com.project.edn.washit.Config;
-import com.project.edn.washit.Model.Cloths;
 import com.project.edn.washit.Model.History;
 import com.project.edn.washit.R;
 
@@ -42,8 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.LogRecord;
-
 
 
 public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -82,9 +76,9 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
         progressBar = (ProgressBar) view.findViewById(R.id.progress_bar123);
         progressBar.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        getJsonHistory("all");
-        parseJson();
+        getJsonHistory("new");
 
     }
 
@@ -94,48 +88,24 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
                     @Override
                     public void onResponse(String response) {
                         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-                        //Jika Respon server sukses
-                        if (Success(response).equalsIgnoreCase("true")){
-                                if (!sharedPreferences.getString("json","").equalsIgnoreCase(response)){
-                                    if (updateParam.equalsIgnoreCase("update")) {
-
-                                        //Getting editor
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        // put nilai false untuk login
-                                        editor.putString("json", response);
-                                        editor.commit();
-                                        getData();
-
-
-                                    }if (updateParam.equalsIgnoreCase("new")){
-                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        // put nilai false untuk login
-                                        editor.putString("json", response);
-                                        editor.commit();
-                                        parseJson();
-                                    }
-
-                                }else {
-//                                    if (sharedPreferences.getString("json","").equalsIgnoreCase("")){
-//                                        SharedPreferences.Editor editor = sharedPreferences.edit();
-//                                        // put nilai false untuk login
-//                                        editor.putString("json", response);
-//                                        editor.commit();
-//                                        parseJson();
-//                                    }else{
-                                        if(updateParam.equalsIgnoreCase("new")){
-                                            parseJson();
-
-                                        }
-//                                    }
-                                    //                                    parceJson();
-//                                    mSwipeRefreshLayout.setRefreshing(false);
+                        if (Success(response).equalsIgnoreCase("true")) {
+                            if (!sharedPreferences.getString("jsonComplete","").equalsIgnoreCase(response)) {
+                                SharedPreferences.Editor editor=sharedPreferences.edit();
+                                if (updateParam.equalsIgnoreCase("update")) {
+                                    editor.putString("jsonComplete", response);
+                                    editor.commit();
+                                    getData();
                                 }
-
-                        }else {
-
+                                if (updateParam.equalsIgnoreCase("new")) {
+                                    editor.putString("jsonComplete", response);
+                                    editor.commit();
+                                    parseJson();
+                                }
+                            } else if (updateParam.equalsIgnoreCase("new")) {
+                                parseJson();
+                            }
                         }
+
 
 
                     }
@@ -144,7 +114,7 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Tambahkan apa yang terjadi setelah Pesan Error muncul, alternatif
-//                        Toast.makeText(getActivity(), "Failed Load Your Data,Check Your Connection" , Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Failed Load Your Data,Check Your Connection", Toast.LENGTH_LONG).show();
 
                     }
                 }) {
@@ -152,10 +122,10 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
                 //Parameter
-                params.put("update", "");
-//                params.put("token", token);
+                params.put("ket", "Completed");
+                params.put(Config.TOKEN_SHARED_PREF,sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""));
+                return params;//                params.put("token", token);
                 //Kembalikan Nilai parameter
-                return params;
             }
         };
 
@@ -183,7 +153,7 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
         progressBar.setVisibility(View.GONE);
         historyList = new ArrayList<>();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String jsonCache=sharedPreferences.getString("json", "");
+        String jsonCache=sharedPreferences.getString("jsonComplete", "");
 
 
             try {
@@ -238,7 +208,7 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
     private void getData() {
         History item =new History();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String jsonCache=sharedPreferences.getString("json", "");
+        String jsonCache=sharedPreferences.getString("jsonComplete", "");
             try {
                 JSONObject json1= (JSONObject) new JSONTokener(jsonCache).nextValue();
                 JSONArray json2 = json1.getJSONArray("data");
@@ -255,7 +225,8 @@ public class CompleteFragment extends Fragment implements SwipeRefreshLayout.OnR
                     item.setDatefinish(post.optString("datefinish"));
                     item.setOrderdate(post.optString("orderdate"));
                     item.setPrice(post.optString("cost"));
-                    historyList.add(0,item);
+                    historyList.clear();
+                    historyList.add(item);
                 }
 
 

@@ -204,7 +204,7 @@ public class SetAddress extends AppCompatActivity implements OnMapReadyCallback,
     public void onMyLocationChange(Location location) {
         if (!isLocationFound) {
             isLocationFound = true;
-            CameraUpdate zoom = CameraUpdateFactory.zoomTo(Config.MAP_ZOOM_LEVEL);
+            CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
             globalGoogleMap.moveCamera(zoom);
 
             CameraUpdate center = CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude()));

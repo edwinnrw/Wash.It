@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.project.edn.washit.Activity.DetailHistory;
-import com.project.edn.washit.Activity.DetailMerchant;
-import com.project.edn.washit.Model.Cloths;
 import com.project.edn.washit.Model.History;
 import com.project.edn.washit.R;
 

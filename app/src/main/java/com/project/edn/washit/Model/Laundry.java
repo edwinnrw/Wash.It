@@ -1,26 +1,38 @@
 package com.project.edn.washit.Model;
 
-/**
- * Created by EDN on 11/26/2016.
- */
+public class Laundry {
+    private String address;
+    private String cost;
+    private String distance;
+    private String hour;
+    private int id;
+    private String image;
+    private String keterangan;
+    private Double latitude;
+    private Double longitude;
+    private String material;
+    private String name;
+    private String phone;
+    private String service;
 
-public class Cloths {
-    private String image,name,address,cost,hour,phone,material,service;
-    private Double latitude,longitude;
-            String distance;
+    public String getKeterangan() {
+        return this.keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
 
     public String getDistance() {
-        return distance;
+        return this.distance;
     }
 
     public void setDistance(String distance) {
         this.distance = distance;
     }
 
-    private int id;
-
     public String getService() {
-        return service;
+        return this.service;
     }
 
     public void setService(String service) {
@@ -28,7 +40,7 @@ public class Cloths {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -36,7 +48,7 @@ public class Cloths {
     }
 
     public String getImage() {
-        return image;
+        return this.image;
     }
 
     public void setImage(String image) {
@@ -44,7 +56,7 @@ public class Cloths {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -52,7 +64,7 @@ public class Cloths {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setAddress(String address) {
@@ -60,7 +72,7 @@ public class Cloths {
     }
 
     public String getCost() {
-        return cost;
+        return this.cost;
     }
 
     public void setCost(String cost) {
@@ -68,7 +80,7 @@ public class Cloths {
     }
 
     public String getHour() {
-        return hour;
+        return this.hour;
     }
 
     public void setHour(String hour) {
@@ -76,7 +88,7 @@ public class Cloths {
     }
 
     public String getPhone() {
-        return phone;
+        return this.phone;
     }
 
     public void setPhone(String phone) {
@@ -84,7 +96,7 @@ public class Cloths {
     }
 
     public Double getLatitude() {
-        return latitude;
+        return this.latitude;
     }
 
     public void setLatitude(Double latitude) {
@@ -92,7 +104,7 @@ public class Cloths {
     }
 
     public Double getLongitude() {
-        return longitude;
+        return this.longitude;
     }
 
     public void setLongitude(Double longitude) {
@@ -100,7 +112,7 @@ public class Cloths {
     }
 
     public String getMaterial() {
-        return material;
+        return this.material;
     }
 
     public void setMaterial(String material) {

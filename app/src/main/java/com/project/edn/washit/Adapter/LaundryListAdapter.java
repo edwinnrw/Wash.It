@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.project.edn.washit.Activity.DetailMerchant;
-import com.project.edn.washit.Model.Cloths;
-import com.project.edn.washit.Model.Shoes;
+import com.project.edn.washit.Model.Laundry;
+
 import com.project.edn.washit.R;
 
 import java.util.ArrayList;
@@ -22,15 +23,27 @@ import java.util.List;
  * Created by EDN on 10/6/2016.
  */
 
-public class ShoesListAdapter extends RecyclerView.Adapter<ShoesListAdapter.MyViewHolder> {
+public class LaundryListAdapter extends RecyclerView.Adapter<LaundryListAdapter.MyViewHolder> {
 
-    private List<Shoes> merchantList;
+    private List<Laundry> merchantList;
     private Context context;
-    private Double lgt,lat;
-    private String material,service,phone,image,cost;
+
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public TextView title, address, hour;
+        public TextView address;
+        private String cost;
+        public TextView hour;
+        private String id;
+        private String image;
         public ImageView imageplace;
+        private String ket;
+        private Double lat;
+        private Double lgt;
+        public LinearLayout map;
+        private String material;
+        private String phone;
+        private String service;
+        public TextView title;
+
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.nameplace);
@@ -44,35 +57,36 @@ public class ShoesListAdapter extends RecyclerView.Adapter<ShoesListAdapter.MyVi
         @Override
         public void onClick(View v) {
             Intent in=new Intent(context, DetailMerchant.class);
-            in.putExtra("name",title.getText());
-            in.putExtra("address",address.getText());
-            in.putExtra("hour",hour.getText());
-            in.putExtra("image",image);
-            in.putExtra("cost",cost);
-            in.putExtra("material",material);
-            in.putExtra("service",service);
-            in.putExtra("long",lgt);
-            in.putExtra("lat",lat);
-            in.putExtra("phone",phone);
+            in.putExtra("id_laundry", this.id);
+            in.putExtra("name", this.title.getText());
+            in.putExtra("address", this.address.getText());
+            in.putExtra("hour", this.hour.getText());
+            in.putExtra("image", this.image);
+            in.putExtra("cost", this.cost);
+            in.putExtra("material", this.material);
+            in.putExtra("service", this.service);
+            in.putExtra("long", this.lgt);
+            in.putExtra("lat", this.lat);
+            in.putExtra("phone", this.phone);
+            in.putExtra("Ket", this.ket);
             context.startActivity(in);
-
         }
     }
-    public ShoesListAdapter(Context context, List<Shoes> merchantList) {
+    public LaundryListAdapter(Context context, List<Laundry> merchantList) {
         this.merchantList = merchantList;
         this.context = context;
 
 
     }
-    public ShoesListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public LaundryListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_list_merchant, null);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ShoesListAdapter.MyViewHolder holder, int position) {
-        Shoes merchant = merchantList.get(position);
+    public void onBindViewHolder(LaundryListAdapter.MyViewHolder holder, int position) {
+        Laundry merchant = merchantList.get(position);
         Glide.with(context).load(merchant.getImage())
                 .centerCrop()
                 .error(R.drawable.placehholder_image)
@@ -81,22 +95,27 @@ public class ShoesListAdapter extends RecyclerView.Adapter<ShoesListAdapter.MyVi
         holder.title.setText(merchant.getName());
         holder.address.setText(merchant.getAddress());
         holder.hour.setText(merchant.getHour());
-        lat=merchant.getLatitude();
-        lgt=merchant.getLongitude();
-        material=merchant.getMaterial();
-        phone=merchant.getPhone();
-        service=merchant.getService();
-        image=merchant.getImage();
-        cost=merchant.getCost();
+        holder.lat = merchant.getLatitude();
+        holder.lgt = merchant.getLongitude();
+        holder.material = merchant.getMaterial();
+        holder.phone = merchant.getPhone();
+        holder.service = merchant.getService();
+        holder.image = merchant.getImage();
+        holder.cost = merchant.getCost();
+        holder.ket = merchant.getKeterangan();
+        holder.id = String.valueOf(merchant.getId());
+
     }
 
     @Override
     public int getItemCount() {
         return (null != merchantList? merchantList.size() : 0);
     }
-    public void setFilter(List<Shoes> shoesModels) {
+
+    public void setFilter(List<Laundry> clothModels) {
         merchantList = new ArrayList<>();
-        merchantList.addAll(shoesModels);
+        merchantList.addAll(clothModels);
         notifyDataSetChanged();
     }
+
 }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,7 @@ import android.widget.ProgressBar;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
-import com.project.edn.washit.Adapter.ClothsListAdapter;
-import com.project.edn.washit.Adapter.HistoryListAdapter;
-import com.project.edn.washit.Model.Cloths;
-import com.project.edn.washit.Model.History;
 import com.project.edn.washit.R;
-
-import java.util.List;
 
 
 /**

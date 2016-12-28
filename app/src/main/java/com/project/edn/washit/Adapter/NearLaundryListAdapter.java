@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.project.edn.washit.Activity.DetailMerchant;
-import com.project.edn.washit.Model.Cloths;
+import com.project.edn.washit.Model.Laundry;
 import com.project.edn.washit.R;
 
 import java.util.ArrayList;
@@ -22,17 +22,18 @@ import java.util.List;
  * Created by EDN on 10/6/2016.
  */
 
-public class NearClothListAdapter extends RecyclerView.Adapter<NearClothListAdapter.MyViewHolder> {
+public class NearLaundryListAdapter extends RecyclerView.Adapter<NearLaundryListAdapter.MyViewHolder> {
 
-    private List<Cloths> merchantList;
+    private List<Laundry> merchantList;
     private Context context;
-    private Double lgt,lat;
-    private String material,service,phone,image,cost;
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView title, address, hour,distance;
         public ImageView imageplace;
         public LinearLayout map;
+
+        private Double lgt,lat;
+        private String material,service,phone,image,cost;
         public MyViewHolder(View view) {
             super(view);
             title = (TextView) view.findViewById(R.id.nameplace);
@@ -60,24 +61,24 @@ public class NearClothListAdapter extends RecyclerView.Adapter<NearClothListAdap
             context.startActivity(in);
         }
     }
-    public NearClothListAdapter(Context context, List<Cloths> merchantList) {
+    public NearLaundryListAdapter(Context context, List<Laundry> merchantList) {
         this.merchantList = merchantList;
         this.context = context;
-//        this.filterList = new ArrayList<Cloths>();
+//        this.filterList = new ArrayList<Laundry>();
 //        // we copy the original list to the filter list and use it for setting row values
 //        this.filterList.addAll(this.merchantList);
 
 
     }
-    public NearClothListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public NearLaundryListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_nearlist_merchant, null);
         MyViewHolder viewHolder = new MyViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(NearClothListAdapter.MyViewHolder holder, int position) {
-        Cloths merchant = merchantList.get(position);
+    public void onBindViewHolder(NearLaundryListAdapter.MyViewHolder holder, int position) {
+        Laundry merchant = merchantList.get(position);
         Glide.with(context).load(merchant.getImage())
                 .centerCrop()
                 .error(R.drawable.placehholder_image)
@@ -87,16 +88,16 @@ public class NearClothListAdapter extends RecyclerView.Adapter<NearClothListAdap
         holder.address.setText(merchant.getAddress());
         holder.hour.setText(merchant.getHour());
         holder.distance.setText(merchant.getDistance()+ " Km");
-        lat=merchant.getLatitude();
-        lgt=merchant.getLongitude();
-        material=merchant.getMaterial();
-        phone=merchant.getPhone();
-        service=merchant.getService();
-        image=merchant.getImage();
-        cost=merchant.getCost();
+        holder.lat=merchant.getLatitude();
+        holder.lgt=merchant.getLongitude();
+        holder.material=merchant.getMaterial();
+        holder.phone=merchant.getPhone();
+        holder.service=merchant.getService();
+        holder.image=merchant.getImage();
+        holder.cost=merchant.getCost();
 
     }
-//    public void filter(final List<Cloths> Cloths) {
+//    public void filter(final List<Laundry> Laundry) {
 //
 //        // Searching could be complex..so we will dispatch it to a different thread...
 //        new Thread(new Runnable() {
@@ -113,7 +114,7 @@ public class NearClothListAdapter extends RecyclerView.Adapter<NearClothListAdap
 //
 //                } else {
 //                    // Iterate in the original List and add it to filter list...
-//                    for (Cloths item : merchantList) {
+//                    for (Laundry item : merchantList) {
 //                        if (item.getName().toLowerCase().contains(text.toLowerCase()) ||
 //                                item.getAddress().toLowerCase().contains(text.toLowerCase())) {
 //                            // Adding Matched items
@@ -141,7 +142,7 @@ public class NearClothListAdapter extends RecyclerView.Adapter<NearClothListAdap
         return (null != merchantList? merchantList.size() : 0);
     }
 
-    public void setFilter(List<Cloths> clothModels) {
+    public void setFilter(List<Laundry> clothModels) {
         merchantList = new ArrayList<>();
         merchantList.addAll(clothModels);
         notifyDataSetChanged();

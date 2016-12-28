@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.CameraUpdate;
@@ -25,13 +26,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.project.edn.washit.R;
 
-public class DetailMerchant extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener {
+public class DetailMerchant extends AppCompatActivity implements OnMapReadyCallback, View.OnClickListener, AppBarLayout.OnOffsetChangedListener {
     private GoogleMap mMap;
-    private LinearLayout call,order,showmap;
-    private TextView phone,address,cost,service,material,hour,namelaundry;
+    private LinearLayout call,order;
+    private TextView phone,address,cost,service,material,hour,nameLaundry;
     private Intent in;
-    private ImageView imglaundry;
+    private ImageView imgLaundry;
     private Toolbar toolbar;
+    private boolean isShow = false;
+    private int scrollRange = -1;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private String ket;
+    private String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,51 +54,37 @@ public class DetailMerchant extends AppCompatActivity implements OnMapReadyCallb
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         in=getIntent();
+        id =in.getStringExtra("id_laundry");
+        ket =in.getStringExtra("Ket");
+        Toast.makeText(this,id+ket,Toast.LENGTH_LONG).show();
         call=(LinearLayout) findViewById(R.id.callBtn);
         call.setOnClickListener(this);
         order=(LinearLayout)findViewById(R.id.orderBtn);
         order.setOnClickListener(this);
-        showmap=(LinearLayout)findViewById(R.id.showMap);
-        showmap.setOnClickListener(this);
+
         phone=(TextView)findViewById(R.id.telp);
         phone.setText(in.getStringExtra("phone"));
         cost=(TextView)findViewById(R.id.cost);
         cost.setText(in.getStringExtra("cost"));
         hour=(TextView)findViewById(R.id.bushoure);
         hour.setText(in.getStringExtra("hour"));
-        namelaundry=(TextView)findViewById(R.id.laundryname);
-        namelaundry.setText(in.getStringExtra("name"));
+        nameLaundry=(TextView)findViewById(R.id.laundryname);
+        nameLaundry.setText(in.getStringExtra("name"));
         material=(TextView)findViewById(R.id.materialsupport);
         material.setText(in.getStringExtra("material"));
         service=(TextView)findViewById(R.id.service);
         service.setText(in.getStringExtra("service"));
         address=(TextView)findViewById(R.id.txt_addressLaundry);
         address.setText(in.getStringExtra("address"));
-        imglaundry=(ImageView)findViewById(R.id.mainbackdrop);
+        imgLaundry=(ImageView)findViewById(R.id.mainbackdrop);
         Glide.with(this).load(in.getStringExtra("image"))
                 .centerCrop()
                 .error(R.drawable.placehholder_image)
                 .placeholder(R.drawable.placehholder_image)
-                .into(imglaundry);
-        final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapseToolbar);
+                .into(imgLaundry);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapseToolbar);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            boolean isShow = false;
-            int scrollRange = -1;
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                if (scrollRange == -1) {
-                    scrollRange = appBarLayout.getTotalScrollRange();
-                }
-                if (scrollRange + verticalOffset == 0) {
-                    collapsingToolbarLayout.setTitle(in.getStringExtra("name"));
-                    isShow = true;
-                } else if(isShow) {
-                    collapsingToolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
-                    isShow = false;
-                }
-            }
-        });
+        appBarLayout.addOnOffsetChangedListener(this);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -117,20 +110,34 @@ public class DetailMerchant extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onClick(View view) {
-        Intent in;
+        Intent in1;
         switch (view.getId()){
             case R.id.callBtn:
-                in = new Intent(Intent.ACTION_DIAL);
-                in.setData(Uri.parse(phone.getText().toString()));
-                startActivity(in);
+                in1= new Intent(Intent.ACTION_DIAL);
+                in1.setData(Uri.parse(phone.getText().toString()));
+                startActivity(in1);
                 break;
             case R.id.orderBtn:
-                in=new Intent(DetailMerchant.this, OrderForm.class);
-                startActivity(in);
-                break;
-            case R.id.showMap:
+                in1=new Intent(DetailMerchant.this, OrderForm.class);
+                in1.putExtra("Ket", ket);
+                in1.putExtra("id", id);
+                startActivity(in1);
                 break;
             default:
+        }
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        if (scrollRange == -1) {
+            scrollRange = appBarLayout.getTotalScrollRange();
+        }
+        if (scrollRange + verticalOffset == 0) {
+            collapsingToolbarLayout.setTitle(in.getStringExtra("name"));
+            isShow = true;
+        } else if(isShow) {
+            collapsingToolbarLayout.setTitle(" ");//carefull there should a space between double quote otherwise it wont work
+            isShow = false;
         }
     }
 }
