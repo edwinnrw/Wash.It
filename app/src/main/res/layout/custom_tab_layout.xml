@@ -22,7 +22,6 @@
         android:layout_centerHorizontal="true"
         android:scaleType="center"
         android:src="@drawable/custom_icon"
-        app:tint="@color/light_blue_500"
         />
 
     <TextView

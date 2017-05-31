@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.project.edn.washit.Activity.OrderForm">
+    tools:context="com.project.edn.washit.activity.OrderForm">
     <include layout="@layout/toolbar"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,28 +49,8 @@
         android:layout_height="wrap_content"
         android:hint="Address"
         android:drawableLeft="@drawable/ic_room_black_18dp"/>
-    <EditText
-        android:id="@+id/detailaddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="19dp"
-        android:drawablePadding="15dp"
-        android:layout_marginTop="10dp"
-        android:drawableTint="@color/accent"
-        android:hint="House No/Floor/Landmark"
-        android:drawableLeft="@drawable/ic_assignment_18dp"/>
-    <EditText
-        android:id="@+id/note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="19dp"
-        android:drawablePadding="15dp"
-        android:layout_marginTop="10dp"
-        android:drawableTint="@color/accent"
-        android:hint="Add Note (Optional)"
-        android:drawableLeft="@drawable/ic_description_black_18dp"/>
+
+
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"

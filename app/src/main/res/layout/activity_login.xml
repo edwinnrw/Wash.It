@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.project.edn.washit.Activity.LoginActivity"
+    tools:context="com.project.edn.washit.activity.LoginActivity"
     android:gravity="center_horizontal">
     <ScrollView
         android:layout_width="match_parent"
