@@ -97,7 +97,6 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 try {
                     String json=response.body().string();
-                    Toast.makeText(NearActivity.this, json, Toast.LENGTH_SHORT).show();
                     if (Success(json).equalsIgnoreCase("true")){
                         parceJson(json);
                     }
@@ -113,47 +112,6 @@ public class NearActivity extends AppCompatActivity implements SearchView.OnQuer
 
             }
         });
-//        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, Config.API_NEARGETDATALAUNDRY,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        //Jika Respon server sukses
-//                        if (Success(response).equalsIgnoreCase("true")){
-//                            parceJson(response);
-//                        }
-//
-//
-//
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        //Tambahkan apa yang terjadi setelah Pesan Error muncul, alternatif
-//                        Toast.makeText(NearActivity.this, "Failed Load Your Data,Check Your Connection"+error.getMessage() , Toast.LENGTH_LONG).show();
-//
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                //Parameter
-////                params.put(Config.VAR_ID, Config.KEY_ID);
-////                params.put("token", token);
-////                params.put("city", city);
-////                params.put("category", category);
-//
-//                //Kembalikan Nilai parameter
-//                return params;
-//            }
-//        };
-//
-//        //Tambahkan Request String ke dalam Queue
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-////        int socketTimeout = 100000;//30 seconds - change to what you want
-////        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-////        stringRequest1.setRetryPolicy(policy);
-//        requestQueue.add(stringRequest1);
 
     }
     public String Success(String json) {

@@ -161,51 +161,7 @@ public class OrderForm extends AppCompatActivity implements View.OnClickListener
 
             }
         });
-//        StringRequest stringRequest1 = new StringRequest(Request.Method.POST, Config.API_ORDER,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        //Jika Respon server sukses
-//                        Toast.makeText(OrderForm.this, response , Toast.LENGTH_LONG).show();
-//
-//                        progressDialog.dismiss();
-//                        if (Success(response).equalsIgnoreCase("true")) {
-//                            showMessage();
-//                        }else {
-//                            Toast.makeText(OrderForm.this,"Failed",Toast.LENGTH_LONG).show();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        //Tambahkan apa yang terjadi setelah Pesan Error muncul, alternatif
-//                        Toast.makeText(OrderForm.this, "Failed Load Your Data,Check Your Connection"+error.getMessage() , Toast.LENGTH_LONG).show();
-//
-//                    }
-//                }) {
-//            @Override
-//            protected Map<String, String> getParams() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                //Parameter
-////                params.put("token", token);
-//                params.put("type",in.getStringExtra("Ket"));
-//                params.put(Config.TOKEN_SHARED_PREF, sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""));
-//                params.put("id_laundry", in.getStringExtra("id"));
-//                params.put("address", address);
-//                params.put("datepick", date);
-//                params.put("time", time);
-//                //Kembalikan Nilai parameter
-//                return params;
-//            }
-//        };
-//
-//        //Tambahkan Request String ke dalam Queue
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        int socketTimeout = 10000;//30 seconds - change to what you want
-//        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-//        stringRequest1.setRetryPolicy(policy);
-//        requestQueue.add(stringRequest1);
+
     }
     public String Success(String json) {
         String succes = "";

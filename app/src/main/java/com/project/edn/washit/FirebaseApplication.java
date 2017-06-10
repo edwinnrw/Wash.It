@@ -22,6 +22,8 @@ public class FirebaseApplication extends Application {
         FirebaseApplication.IsMainActivityOpen = isMainActivityOpen;
     }
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();

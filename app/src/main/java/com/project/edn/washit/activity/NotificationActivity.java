@@ -10,7 +10,6 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.project.edn.washit.Config;
-import com.project.edn.washit.MyBrowser;
 import com.project.edn.washit.R;
 
 public class NotificationActivity extends AppCompatActivity  {
@@ -30,7 +29,7 @@ public class NotificationActivity extends AppCompatActivity  {
         webView=(WebView)findViewById(R.id.webView);
         progressBar=(ProgressBar)findViewById(R.id.progress_bar123);
 
-        webView.setWebViewClient(new MyBrowser(progressBar));
+//        webView.setWebViewClient(new MyBrowser(progressBar));
         webView.getSettings().setJavaScriptEnabled(true);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         this.webView.loadUrl("http://washittest.azurewebsites.net/API/notification.php?token=" + sharedPreferences.getString(Config.TOKEN_SHARED_PREF, ""));

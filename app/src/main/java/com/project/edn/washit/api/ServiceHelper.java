@@ -25,7 +25,7 @@ public class ServiceHelper {
 
 //    private static OkHttpClient httpClient = new OkHttpClient();
 
-    private static ServiceHelper instance=new ServiceHelper();
+    private static ServiceHelper instance=null;
     private ApiService service;
 
 
@@ -37,7 +37,9 @@ public class ServiceHelper {
     }
 
     public static ServiceHelper getInstance() {
-
+        if (instance==null){
+            instance=new ServiceHelper();
+        }
         return instance;
     }
 

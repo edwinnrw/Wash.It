@@ -125,6 +125,7 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
     }
 
     public void getJsonHistory(final String updateParam) {
+        Toast.makeText(getActivity(), "Tes", Toast.LENGTH_SHORT).show();
         Map<String, String> params = new HashMap<>();
         //Parameter
         params.put("ket", "In progress");
@@ -135,16 +136,19 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 try {
                     String json=response.body().string();
+
                     if (Success(json).equalsIgnoreCase("true")) {
-                        if (!sharedPreferences.getString("jsonComplete","").equalsIgnoreCase(json)) {
+                        if (!sharedPreferences.getString("jsonInprogress","").equalsIgnoreCase(json)) {
                             SharedPreferences.Editor editor=sharedPreferences.edit();
                             if (updateParam.equalsIgnoreCase("update")) {
-                                editor.putString("jsonComplete", json);
+                                editor.putString("jsonInprogress", json);
                                 editor.commit();
                                 getData();
                             }
                             if (updateParam.equalsIgnoreCase("new")) {
-                                editor.putString("jsonComplete", json);
+                                Toast.makeText(getActivity(), "new"+json, Toast.LENGTH_LONG).show();
+
+                                editor.putString("jsonInprogress", json);
                                 editor.commit();
                                 parseJson();
                             }
@@ -162,6 +166,7 @@ public class InProgressFragment extends Fragment implements SwipeRefreshLayout.O
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
